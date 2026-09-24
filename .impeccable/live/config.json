@@ -1,0 +1,6 @@
+{
+  "files": ["app/root.tsx"],
+  "insertBefore": "<ScrollRestoration",
+  "commentSyntax": "jsx",
+  "cspChecked": true
+}
