@@ -60,21 +60,21 @@ export function Hero() {
   );
 }
 
-// Pass `src` once the generated asset lands in public/ (a transparent PNG/WebP, subject anchored to the bottom edge).
-// Until then the slot renders a placeholder so the layout keeps its final proportions.
-function HeroIllustration({ src, className }: { src?: string; className?: string }) {
+// Transparent 3:4 asset with the wrist on the bottom edge, so object-bottom seats it on the row divider.
+// It rises in once the linework nodes have landed (last node at ~900ms).
+function HeroIllustration({ className }: { className?: string }) {
   return (
     <div className={className}>
-      {src ? (
-        <img src={src} alt="" className="size-full object-contain object-bottom" />
-      ) : (
-        <div className="grid size-full place-items-center border border-dashed border-neutral-300 bg-paper">
-          <div className="flex flex-col items-center gap-1 px-4 text-center">
-            <span className="text-small text-neutral-600">Ruang ilustrasi</span>
-            <span className="font-mono text-label text-neutral-600 uppercase">PNG transparan · potret</span>
-          </div>
-        </div>
-      )}
+      <img
+        src="/hero-hand.webp"
+        srcSet="/hero-hand-sm.webp 543w, /hero-hand.webp 1086w"
+        sizes="(min-width: 1024px) 28vw, 288px"
+        width={1086}
+        height={1448}
+        alt=""
+        fetchPriority="high"
+        className="size-full object-contain object-bottom motion-safe:animate-rise motion-safe:[animation-delay:700ms]"
+      />
     </div>
   );
 }
