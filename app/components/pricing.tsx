@@ -4,13 +4,11 @@ import { cx } from "./ui/cx";
 
 const inset = "px-5 md:px-8 lg:px-12";
 
-// Placeholder prices and quotas; the section caption says so on the page.
 type Plan = {
   id: "free" | "pro";
   name: string;
   pitch: string;
   price: string;
-  quota: string;
   cta: string;
 };
 
@@ -20,7 +18,6 @@ const plans: Plan[] = [
     name: "Free",
     pitch: "Buat mencoba alurnya dan menulis beberapa draft tiap minggu.",
     price: "Rp0",
-    quota: "15/bulan",
     cta: "Coba gratis",
   },
   {
@@ -28,7 +25,6 @@ const plans: Plan[] = [
     name: "Pro",
     pitch: "Buat creator yang posting hampir tiap hari di lebih dari satu platform.",
     price: "Rp49.000",
-    quota: "300/bulan",
     cta: "Pilih Pro",
   },
 ];
@@ -63,7 +59,7 @@ export function Pricing() {
         <div className="grid gap-4 lg:grid-cols-12 lg:items-baseline lg:gap-0">
           <span className="font-mono text-label text-neutral-600 uppercase lg:col-span-3">03 / Harga</span>
           <h2 id="harga-title" className="m-0 text-h2 text-balance text-draft lg:col-span-9">
-            Coba dulu tanpa bayar. <span className="text-ink">Naik ke Pro kalau jadwal postingmu makin padat.</span>
+            <span className="text-draft-fade">Coba dulu tanpa bayar.</span> <span className="text-ink">Naik ke Pro kalau jadwal postingmu makin padat.</span>
           </h2>
         </div>
       </div>
@@ -76,11 +72,10 @@ export function Pricing() {
             lebih banyak sudut per ide, dan riwayat yang lebih panjang.
           </p>
         </div>
-        <Badge className="self-start">Harga contoh</Badge>
       </div>
 
       {plans.map((p) => (
-        <div key={p.id} className={`flex bg-paper py-10 md:py-12 lg:col-span-4 ${inset}`}>
+        <div key={p.id} className="flex bg-paper p-3 md:p-4 lg:col-span-4">
           <PlanCard plan={p} />
         </div>
       ))}
@@ -136,12 +131,6 @@ export function Pricing() {
           ))}
         </table>
       </div>
-
-      <div className={`bg-paper py-5 lg:col-span-12 ${inset}`}>
-        <p className="m-0 text-small text-pretty text-neutral-600">
-          Harga dan kuota di section ini adalah contoh untuk portfolio. Scripta belum punya paket berbayar.
-        </p>
-      </div>
     </section>
   );
 }
@@ -149,10 +138,10 @@ export function Pricing() {
 // The header row has no top rule: the section's hairline gap already draws it.
 const th = "border-line py-4 align-bottom font-mono text-label font-medium uppercase";
 const td = "border-t border-line py-4 text-small tabular-nums";
-// The label column shares the section inset; value columns carry the hairline on their left edge and the same
-// lg inset as the card cells above, so each value sits under its card's left edge.
+// The label column shares the section inset; value columns carry the hairline on their left edge and line up
+// with the card's inner padding at lg (cell p-4 + card px-4), so each value sits under its card's content.
 const lead = inset;
-const col = "border-l px-4 md:px-8 lg:px-12";
+const col = "border-l px-4 lg:px-8";
 
 function PlanCard({ plan }: { plan: Plan }) {
   const pro = plan.id === "pro";
@@ -164,16 +153,6 @@ function PlanCard({ plan }: { plan: Plan }) {
         pro ? "border-accent bg-editor text-paper" : "border-neutral-300 bg-paper text-ink",
       )}
     >
-      <div
-        className={cx(
-          "flex h-12 items-center border-b px-4 font-mono text-small",
-          pro ? "border-neutral-700" : "border-line",
-        )}
-      >
-        <span className="whitespace-nowrap">
-          <span className={pro ? "text-neutral-500" : "text-neutral-600"}>draft:</span> {plan.quota}
-        </span>
-      </div>
       <div className="flex flex-1 flex-col gap-6 px-4 py-5">
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
