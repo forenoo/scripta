@@ -67,16 +67,38 @@
   --text-body--line-height: 26px;
   --text-small: 14px;
   --text-small--line-height: 22px;
+  /* Editor surfaces (demo box): mono, one step denser than body sizes */
+  --text-code: 13px;
+  --text-code--line-height: 20px;
+  --text-code-sm: 12px;
+  --text-code-sm--line-height: 16px;
   --text-label: 12px;
   --text-label--line-height: 16px;
   --text-label--letter-spacing: 0.04em;
   --text-label--font-weight: 500;
 
+  /* Easing: strong curves; the built-in ease-out is too soft to feel intentional */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Easing: contextual icon swaps */
+  --ease-swap: cubic-bezier(0.2, 0, 0, 1);
+
   /* Motion: a draft line being written in */
   --animate-line-in: line-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  /* Motion: hero linework tracing in toward the illustration (paths use pathLength="1") */
-  --animate-draw: draw 1600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* Motion: hero linework tracing in toward the illustration (paths use pathLength="1").
+     hero-lines.tsx times its nodes against this duration and curve. */
+  --animate-draw: draw 1150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  /* Motion: hero pitch settling in, one line after another */
+  --animate-rise: rise 520ms var(--ease-out-strong) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(4px);
+    }
+  }
 
   @keyframes draw {
     from {
@@ -93,18 +115,41 @@
   }
 }
 
-@utility halftone {
-  background: radial-gradient(
-      circle,
-      var(--color-accent) var(--dot, 1.6px),
-      transparent calc(var(--dot, 1.6px) + 0.4px)
-    )
-    0 0 / var(--cell, 6px) var(--cell, 6px);
+/* Anything pressable: colors ease on hover, and the control dips slightly on press so it feels heard. */
+@utility pressable {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    text-decoration-color 150ms ease,
+    transform 160ms var(--ease-out-strong);
+  &:active {
+    transform: scale(0.96);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+/* Demo draft body before its first write-in. With JS it starts blank (so the SSR text never flashes and then
+   vanishes); without JS the static draft stays readable. */
+@media (scripting: enabled) {
+  [data-stream-pending] {
+    visibility: hidden;
+  }
+  /* Feature art waiting to load; FadeImage clears it on load. */
+  [data-img-pending] {
+    opacity: 0;
+  }
 }
 
 @layer base {
   html {
     scrollbar-color: var(--color-neutral-300) var(--color-paper);
+    /* Pressables give their own feedback (scale on press); the grey tap flash would double it on touch. */
+    -webkit-tap-highlight-color: transparent;
   }
   /* Footer anchors jump across a long page; gliding keeps the reader oriented. */
   @media (prefers-reduced-motion: no-preference) {
@@ -124,6 +169,10 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+  /* Accent reaches only 3.0:1 on the dark editor; the lighter cobalt step keeps the ring visible (6.1:1). */
+  .bg-editor :focus-visible {
+    outline-color: var(--color-cobalt-400);
   }
   ::selection {
     background: var(--color-cobalt-200);

@@ -1,4 +1,4 @@
-import { ArrowUp } from "./ui/button";
+import { ArrowUp, ArrowUpRight } from "./ui/button";
 import { Wordmark } from "./ui/wordmark";
 
 const inset = "px-5 md:px-8 lg:px-12";
@@ -17,17 +17,21 @@ const legal = [
   { label: "Kebijakan Privasi", href: "/privasi" },
 ];
 
-// TODO: Scripta has no social accounts yet. Fill in handle and href; rows render as plain text until href is set.
-const socials: { platform: string; handle: string | null; href: string | null }[] = [
-  { platform: "TikTok", handle: null, href: null },
-  { platform: "Instagram", handle: null, href: null },
-  { platform: "YouTube", handle: null, href: null },
+const socials = [
+  { platform: "TikTok", handle: "@scripta", href: "https://www.tiktok.com/@scripta" },
+  { platform: "Instagram", handle: "@scripta", href: "https://www.instagram.com/scripta" },
+  { platform: "YouTube", handle: "@scripta", href: "https://www.youtube.com/@scripta" },
 ];
 
 const heading = "m-0 font-mono text-label font-medium text-neutral-600 uppercase";
 const row = "border-t border-line first:border-t-0";
-// min-h-11 keeps every row a 44px tap target on phones.
-const link = "flex min-h-11 items-center gap-4 text-small text-ink hover:text-accent";
+// min-h-11 keeps every row a 44px tap target on phones. Hover is a color change, so it eases with plain `ease`.
+const link =
+  "group flex min-h-11 items-center text-small text-ink transition-[color] duration-150 ease-[ease] hover:text-accent";
+// Secondary text inside a row follows the row's hover so the whole line lights up as one target.
+const meta = "font-mono text-label text-neutral-600 transition-[color] duration-150 ease-[ease] group-hover:text-accent";
+// Arrows nudge toward where the link goes. Footer is visited rarely, so a small motion cue is earned here.
+const nudge = "inline-flex transition-[translate,color] duration-200 ease-(--ease-out-strong) motion-reduce:transition-none";
 
 export function Footer() {
   return (
@@ -37,8 +41,14 @@ export function Footer() {
           <Wordmark />
           <p className="m-0 max-w-90 text-body text-pretty text-ink">Dari ide mentah jadi naskah siap posting.</p>
         </div>
-        <p className="m-0 max-w-90 text-small text-pretty text-neutral-600">
-          Scripta adalah proyek portfolio. Produk, harga, dan persona creator di halaman ini masih contoh.
+        <p className="m-0 text-small text-neutral-600">
+          Ada pertanyaan?{" "}
+          <a
+            href="mailto:halo@scripta.id"
+            className="text-ink underline decoration-neutral-300 underline-offset-4 transition-[color,text-decoration-color] duration-150 ease-[ease] hover:text-ink hover:decoration-ink"
+          >
+            halo@scripta.id
+          </a>
         </p>
       </div>
 
@@ -49,8 +59,8 @@ export function Footer() {
         <ul className="m-0 list-none p-0">
           {sections.map((s) => (
             <li key={s.href} className={row}>
-              <a href={s.href} className={link}>
-                <span className="font-mono text-label text-neutral-600 tabular-nums">{s.no}</span>
+              <a href={s.href} className={`${link} gap-4`}>
+                <span className={`${meta} tabular-nums`}>{s.no}</span>
                 {s.label}
               </a>
             </li>
@@ -67,7 +77,7 @@ export function Footer() {
           <ul className="m-0 list-none p-0">
             {legal.map((l) => (
               <li key={l.href} className={row}>
-                <a href={l.href} className={link}>
+                <a href={l.href} className={`${link} gap-4`}>
                   {l.label}
                 </a>
               </li>
@@ -75,33 +85,36 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div className={`flex flex-col gap-3 bg-paper py-10 md:py-12 ${inset}`}>
-          <h2 className={heading}>Sosial</h2>
+        <section aria-labelledby="footer-sosial" className={`flex flex-col gap-3 bg-paper py-10 md:py-12 ${inset}`}>
+          <h2 id="footer-sosial" className={heading}>
+            Sosial
+          </h2>
           <ul className="m-0 list-none p-0">
             {socials.map((s) => (
               <li key={s.platform} className={row}>
-                {s.href ? (
-                  <a href={s.href} className={link} target="_blank" rel="noreferrer">
-                    {s.platform}
-                    <span className="font-mono text-label text-neutral-600">{s.handle}</span>
-                  </a>
-                ) : (
-                  <span className="flex min-h-11 items-center gap-4 text-small text-ink">
-                    {s.platform}
-                    <span className="font-mono text-label text-neutral-600">[@handle]</span>
+                <a href={s.href} className={`${link} justify-between gap-4`} target="_blank" rel="noopener noreferrer">
+                  {s.platform}
+                  <span className="flex items-center gap-1.5">
+                    <span className={meta}>{s.handle}</span>
+                    <span className={`text-neutral-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent ${nudge}`}>
+                      <ArrowUpRight size={14} />
+                    </span>
+                    <span className="sr-only">(buka di tab baru)</span>
                   </span>
-                )}
+                </a>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       </div>
 
       <div className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-paper py-3 lg:col-span-12 ${inset}`}>
         <p className="m-0 font-mono text-label text-neutral-600">© {new Date().getFullYear()} Scripta</p>
-        <a href="#top" className="flex min-h-11 items-center gap-1.5 text-small font-semibold text-ink hover:text-accent">
+        <a href="#top" className={`${link} gap-1.5 font-semibold`}>
           Kembali ke atas
-          <ArrowUp />
+          <span className={`group-hover:-translate-y-0.5 ${nudge}`}>
+            <ArrowUp />
+          </span>
         </a>
       </div>
     </footer>

@@ -35,7 +35,7 @@ const swatches = [
   { name: "Abu draft", token: "--draft", hex: "#A3A3A3", bg: "bg-draft", use: "Bagian awal headline dua warna. Display saja." },
   { name: "Grid line", token: "--line", hex: "#E4E2DC", bg: "bg-line", use: "Garis struktur halaman dan border sel." },
   { name: "Demo box", token: "--editor", hex: "#1C1C1C", bg: "bg-editor", use: "Permukaan editor gelap di hero." },
-  { name: "Kobalt", token: "--accent", hex: "#2B50FF", bg: "bg-accent", use: "CTA, state aktif, halftone. Satu-satunya aksen." },
+  { name: "Kobalt", token: "--accent", hex: "#2B50FF", bg: "bg-accent", use: "CTA, state aktif, LED di foto. Satu-satunya aksen." },
 ];
 
 const neutralRamp = [
@@ -104,7 +104,7 @@ export default function DesignSystem() {
       </header>
 
       <section className={cx("border-b border-line pt-22 pb-18", gutter)}>
-        <h1 className="m-0 max-w-225 text-[clamp(44px,7vw,80px)] leading-[1.02] font-medium tracking-[-0.035em] text-balance text-draft">
+        <h1 className="m-0 max-w-225 text-[clamp(44px,7vw,80px)] leading-[1.02] font-medium tracking-[-0.035em] text-balance text-neutral-500">
           Dari ide yang masih berantakan, <span className="text-ink">jadi naskah siap posting.</span>
         </h1>
         <p className="mt-7 max-w-140 text-body-l text-pretty text-neutral-600">
@@ -162,7 +162,7 @@ export default function DesignSystem() {
             <span className={monoLabel}>Ramp kobalt</span>
             <Ramp steps={cobaltRamp} base="500" />
             <p className={note}>
-              500 = base. 600 untuk hover, 700 untuk pressed dan teks di atas fill 100. 100–200 untuk tint badge dan
+              500 = base untuk ring fokus dan LED di foto. 600 untuk fill button primary, 700 untuk hover dan teks di atas fill 100, 800 untuk pressed. 100–200 untuk tint badge dan
               seleksi teks.
             </p>
           </Cell>
@@ -170,15 +170,13 @@ export default function DesignSystem() {
 
         <div className={cx(cells, "grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] border-t-0")}>
           <Cell className="gap-4">
-            <span className={monoLabel}>Halftone kobalt</span>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="halftone h-24 border border-line [--cell:5px] [--dot:1px]" />
-              <div className="halftone h-24 border border-line [--cell:6px] [--dot:1.6px]" />
-              <div className="halftone h-24 border border-line [--cell:6px] [--dot:2.4px]" />
+            <span className={monoLabel}>Warna di foto</span>
+            <div className="flex h-24 items-center justify-center border border-line bg-neutral-100">
+              <span className="size-2 rounded-full bg-accent shadow-[0_0_12px_4px_var(--color-cobalt-300)]" />
             </div>
             <p className={note}>
-              Titik kobalt di atas kertas, 3 kepadatan: bayangan terang, midtone, gelap. Hanya untuk objek creator:
-              mikrofon, ring light, HP di tripod.
+              Foto di-grade netral hangat mengikuti kertas, saturasi rendah. Kobalt hanya muncul dari LED atau UI di
+              layar, dan dikoreksi ke #2B50FF saat editing.
             </p>
           </Cell>
           <Cell className="gap-3">
@@ -229,10 +227,10 @@ export default function DesignSystem() {
         <div className="mt-12 flex flex-wrap gap-x-12 gap-y-6 rounded-md bg-neutral-100 p-10">
           <div className={cx(monoLabel, "flex flex-[1_1_160px] flex-col gap-2")}>
             <span className="text-ink">Mekanik teks</span>
-            <span>draft #A3A3A3</span>
+            <span>draft #7A7A7A</span>
             <span>→ final #111111</span>
           </div>
-          <p className="m-0 flex-[4_1_480px] text-[32px] leading-10 font-medium tracking-[-0.02em] text-pretty text-draft">
+          <p className="m-0 flex-[4_1_480px] text-[32px] leading-10 font-medium tracking-[-0.02em] text-pretty text-neutral-500">
             Kamu nggak harus mulai dari halaman kosong. Tulis poin-poinnya, biarkan Scripta menyusun alurnya.{" "}
             <span className="text-ink">Yang tersisa tinggal suaramu sendiri.</span>
           </p>
@@ -311,6 +309,7 @@ export default function DesignSystem() {
                 </Button>
                 <Button variant="secondary">Masuk</Button>
                 <Button variant="outline">Lihat contoh</Button>
+                <Button variant="tonal">Lihat fitur</Button>
                 <Button variant="link">Harga</Button>
               </div>
               <div className="flex flex-wrap items-center gap-3">
@@ -319,7 +318,7 @@ export default function DesignSystem() {
                 <Button size="lg">Large · 48</Button>
                 <Button disabled>Disabled</Button>
               </div>
-              <Notes items={["hover → kobalt 600", "pressed → kobalt 700", "focus → ring 2px kobalt", "disabled → 40%"]} />
+              <Notes items={["fill → kobalt 600", "hover → kobalt 700", "pressed → kobalt 800", "focus → ring 2px kobalt", "disabled → 40%"]} />
             </div>
           </ComponentRow>
 
@@ -354,7 +353,7 @@ export default function DesignSystem() {
             </div>
           </ComponentRow>
 
-          <ComponentRow name="Avatar" desc="Inisial atau foto halftone. Satu-satunya elemen bulat.">
+          <ComponentRow name="Avatar" desc="Inisial, atau foto potret grayscale hangat lewat src. Satu-satunya elemen bulat.">
             <div className="flex flex-wrap items-center gap-10">
               <div className="flex items-center gap-3">
                 <Avatar size={24} initials="RA" />
@@ -365,7 +364,7 @@ export default function DesignSystem() {
               <div className="flex items-center gap-3">
                 <Avatar tone="accent" initials="DN" />
                 <Avatar tone="paper" initials="SK" />
-                <Avatar tone="halftone" aria-label="Foto halftone" />
+                <Avatar tone="muted" initials="RA" />
               </div>
               <AvatarStack>
                 <Avatar initials="RA" />
@@ -427,7 +426,7 @@ function Section({
         <div className={cx(monoLabel, "flex-[1_1_160px]")}>
           {num} / {label}
         </div>
-        <h2 className="m-0 flex-[4_1_520px] text-h2 text-pretty text-draft">
+        <h2 className="m-0 flex-[4_1_520px] text-h2 text-pretty text-neutral-500">
           {draft} <span className="text-ink">{final}</span>
         </h2>
       </div>

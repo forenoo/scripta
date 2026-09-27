@@ -90,13 +90,13 @@ rounded:
   md: 6px
 components:
   button-primary:
-    backgroundColor: "{colors.accent}"
+    backgroundColor: "{colors.cobalt-600}"
     textColor: "{colors.paper}"
     rounded: "{rounded.sm}"
   button-primary-hover:
-    backgroundColor: "{colors.cobalt-600}"
-  button-primary-active:
     backgroundColor: "{colors.cobalt-700}"
+  button-primary-active:
+    backgroundColor: "{colors.cobalt-800}"
   button-secondary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.paper}"
@@ -105,6 +105,15 @@ components:
     backgroundColor: "{colors.neutral-700}"
   button-secondary-active:
     backgroundColor: "{colors.neutral-600}"
+  button-tonal:
+    backgroundColor: transparent
+    textColor: "{colors.neutral-700}"
+    borderColor: "{colors.neutral-300}"
+    rounded: "{rounded.sm}"
+  button-tonal-hover:
+    backgroundColor: "{colors.neutral-100}"
+  button-tonal-active:
+    backgroundColor: "{colors.neutral-200}"
   badge:
     typography: "{typography.label}"
     rounded: "{rounded.xs}"
@@ -143,17 +152,16 @@ Scripta mengubah ide konten yang masih berantakan jadi naskah siap posting. Tamp
 
 ## Colors
 
-- Kobalt (`accent`) adalah satu-satunya aksen. Pakai hanya untuk CTA, state aktif, dan halftone.
-- Abu draft (`draft`) hanya untuk bagian awal headline dua warna di ukuran display. Teks sekunder di atas kertas memakai `neutral-600`.
+- Kobalt (`accent`) adalah satu-satunya aksen. Pakai hanya untuk CTA, state aktif, LED di foto, dan satu elemen terpilih di ilustrasi fitur.
+- Bagian awal headline dua warna memakai `neutral-500` (3.9:1 di atas kertas, lolos syarat 3:1 teks besar). Abu draft (`draft`, 2.3:1) terlalu pucat untuk teks apa pun di atas kertas; pakai hanya di permukaan gelap (label nonaktif di demo box, chip). Teks sekunder di atas kertas memakai `neutral-600`.
 - Ramp kobalt: 600 untuk hover, 700 untuk pressed dan untuk teks di atas fill 100. Step 100–200 untuk tint badge dan seleksi teks.
 - Ramp netral: `neutral-100` untuk hover di permukaan terang, `neutral-300` untuk border input dan badge outline, `neutral-700` untuk border di dalam demo box.
-- Halftone adalah titik kobalt di atas kertas dengan tiga kepadatan: terang, midtone, gelap.
 
 ## Typography
 
 - Manrope untuk headline dan body. Weight 500 untuk headline, 600 untuk judul kecil, 400 untuk body. Tracking negatif untuk `h4` ke atas.
 - JetBrains Mono untuk demo box, chip, badge, dan label kecil. Label selalu uppercase dengan tracking positif.
-- Headline memakai dua warna. Kalimat pertama berwarna `draft`, kalimat penutup berwarna `ink`, seperti draft yang menjadi final.
+- Headline memakai dua warna. Kalimat pertama berwarna `neutral-500`, kalimat penutup berwarna `ink`, seperti draft yang menjadi final. Di headline hero, kalimat penutup selalu mulai di baris baru supaya pergantian warna tidak jatuh di tengah baris.
 
 ## Layout
 
@@ -175,13 +183,17 @@ Scripta mengubah ide konten yang masih berantakan jadi naskah siap posting. Tamp
 - Demo box: jendela editor gelap. Urutannya mengikuti alur produk: title bar (wordmark kecil + nama dokumen), field ide read-only dengan tombol kobalt "Buat draft", segmented control format, draft, lalu baris aksi (jumlah kata + Salin). Kobalt di dalamnya hanya untuk "Buat draft" dan segmen aktif.
 - Draft ditulis per huruf dengan caret kobalt: sekali saat demo box pertama terlihat, lalu setiap format diganti atau "Buat draft" ditekan. Tinggi box tetap setinggi draft terpanjang. Reduced motion langsung menampilkan teks lengkap.
 - Segmented control: satu track border `neutral-700`, label pendek (`Hook`, `Carousel`, `Outline`). Nama lengkap format ada di label draft.
-- Chip: dipakai untuk daftar pilihan bebas panjang (sudut konten di section Fitur). Default memakai border `neutral-700`, aktif fill kobalt.
-- Avatar berisi inisial atau foto halftone. Avatar yang ditumpuk dipisahkan cincin `paper`.
+- Chip: dipakai untuk daftar pilihan bebas panjang, misalnya sudut konten di dalam produk. Default memakai border `neutral-700`, aktif fill kobalt.
+- Avatar berisi inisial, atau foto potret grayscale hangat bila ada. Avatar yang ditumpuk dipisahkan cincin `paper`.
+- Foto: render realistis bergaya editorial studio, di-grade netral hangat mengikuti `paper` dengan saturasi rendah, softbox dari kiri atas dan rim light dari belakang. Seluruh subjek tajam, tanpa bokeh, supaya tepinya bersih saat dipotong. Kobalt di foto hanya dari LED atau cahaya perangkat, dikoreksi ke `accent` saat editing.
+- Foto tidak memuat teks, logo, ukiran, atau tulisan tangan.
+- Manusia hanya muncul di foto potong transparan (hero dan penutup CTA): satu persona creator dengan tangan kulit terang, lengan sweater rajut `ink`, tanpa aksesori, wajah tidak terlihat. Hero memegang transmitter mic graphite; penutup CTA menekan macro pad satu tombol graphite. Subjeknya keluar dari tepi bawah dan berdiri di atas garis sel.
+- Ilustrasi kartu fitur adalah diagram UI flat, bukan foto: dot grid di atas `paper`, orbit dan garis penghubung `neutral-300`, kartu putih melayang dengan shadow lembut, ikon garis `ink`. Kobalt hanya untuk satu elemen terpilih per ilustrasi. Tanpa logo platform. Label pendek yang tercantum di `docs/asset-brief.md` boleh muncul dan wajib dicek ejaannya.
 
 ## Do's and Don'ts
 
 - Do: pakai satu button primary per section.
-- Don't: memakai abu draft untuk teks ukuran body; kontrasnya di atas kertas terlalu rendah.
+- Don't: memakai abu draft untuk teks di atas kertas; kontrasnya terlalu rendah bahkan di ukuran display.
 - Don't: menambah warna aksen kedua selain kobalt.
-- Don't: memakai halftone di luar objek creator (mikrofon, ring light, HP di tripod).
+- Don't: membiarkan teks hasil generate AI di foto cutout. Di ilustrasi fitur, hanya label dari asset brief yang boleh muncul.
 - Don't: membulatkan penuh elemen apa pun selain avatar.

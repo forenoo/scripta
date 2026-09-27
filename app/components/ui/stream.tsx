@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 
 // Streaming "the draft is being written" effect shared by every editor surface.
-const CHAR_MS = 17;
-const LINE_PAUSE_MS = 160;
+// `intro` is the first write-in, slow enough to read along. `quick` is for re-runs, once the reader gets the idea
+// and only wants to compare drafts.
+const PACE = {
+  intro: { char: 17, pause: 160 },
+  quick: { char: 7, pause: 60 },
+};
+export type Pace = keyof typeof PACE;
 
-function charsAt(lines: string[], elapsed: number) {
+function charsAt(lines: string[], elapsed: number, pace: Pace) {
+  const { char, pause } = PACE[pace];
   let t = elapsed;
   let chars = 0;
   for (const line of lines) {
-    t -= LINE_PAUSE_MS;
+    t -= pause;
     if (t <= 0) return chars;
-    const n = Math.min(line.length, Math.floor(t / CHAR_MS));
+    const n = Math.min(line.length, Math.floor(t / char));
     chars += n;
     if (n < line.length) return chars;
-    t -= line.length * CHAR_MS;
+    t -= line.length * char;
   }
   return chars;
 }
@@ -22,29 +28,29 @@ function charsAt(lines: string[], elapsed: number) {
  * Returns how many characters of `lines` are revealed. `run` 0 is the static first render (everything shown,
  * so SSR and no-JS get the full text); each bump restarts the write-in. Reduced motion skips straight to the end.
  */
-export function useStream(lines: string[], run: number) {
+export function useStream(lines: string[], run: number, pace: Pace = "intro") {
   const total = lines.reduce((sum, l) => sum + l.length, 0);
-  const [shown, setShown] = useState(Infinity);
+  const [progress, setProgress] = useState({ run: 0, shown: Infinity });
+  // `run` only moves past 0 from client events, so `window` is safe here.
+  const reduce = run > 0 && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
-    if (run === 0 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(Infinity);
-      return;
-    }
+    if (run === 0 || reduce) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
-      const next = charsAt(lines, now - start);
-      setShown(next >= total ? Infinity : next);
+      const next = charsAt(lines, now - start, pace);
+      setProgress({ run, shown: next >= total ? Infinity : next });
       if (next < total) raf = requestAnimationFrame(tick);
     };
-    setShown(0);
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // `run` changes whenever the active draft changes, so it is the only trigger needed.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
 
+  // A new run is blank from its very first render, so the previous or full draft never flashes for a frame.
+  const shown = run === 0 || reduce ? Infinity : progress.run === run ? progress.shown : 0;
   return { shown, writing: shown !== Infinity };
 }
 
