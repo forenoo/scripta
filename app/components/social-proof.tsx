@@ -56,7 +56,7 @@ export function SocialProof() {
           <span className="font-mono text-label text-neutral-600 uppercase">{q.used}</span>
           {/* Negative indent hangs the opening mark so the letters, not the quote, align with the label. */}
           <blockquote className="m-0">
-            <p className="m-0 -indent-[0.4em] text-body-l text-pretty text-ink">“{q.quote}”</p>
+            <p className="m-0 max-w-150 -indent-[0.4em] text-body-l text-pretty text-ink">“{q.quote}”</p>
           </blockquote>
           <figcaption className="mt-auto flex items-center gap-3 pt-4">
             <Avatar size={40} tone="muted" initials={q.initials} src={q.photo} aria-hidden />

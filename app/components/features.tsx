@@ -11,6 +11,8 @@ type Feature = {
   body: string;
   // Illustration path under /public (docs/asset-brief.md, #2–#6). Empty until the art is ready; the slot shows its export size instead.
   art?: string;
+  // Extra classes for the art inside its slot, e.g. to shrink a diagram that fills the frame edge to edge.
+  artClassName?: string;
   alt: string;
 };
 
@@ -21,6 +23,8 @@ type Feature = {
 const lead: Feature[] = [
   {
     id: "sudut",
+    art: "/fitur-sudut.png",
+    artClassName: "scale-85",
     eyebrow: "Buntu ide",
     title: "Satu ide mentah jadi beberapa sudut konten.",
     body: "Topik yang sama bisa jadi perbandingan, cerita, atau eksperimen. Scripta menawarkan beberapa sudut dari idemu, kamu pilih yang paling cocok buat audiensmu.",
@@ -28,6 +32,7 @@ const lead: Feature[] = [
   },
   {
     id: "draft",
+    art: "/fitur-draft.png",
     eyebrow: "Buntu kalimat",
     title: "Sudut yang kamu pilih langsung jadi draft.",
     body: "Hook pembuka, arahan shot dalam kurung siku, sampai kalimat penutup. Semuanya ditulis mengikuti sudut yang kamu pilih, tinggal kamu sesuaikan dengan gayamu.",
@@ -38,18 +43,21 @@ const lead: Feature[] = [
 const support: Feature[] = [
   {
     id: "format",
+    art: "/fitur-format.png",
     title: "Satu sudut, tiga format.",
     body: "Hook 15 detik untuk TikTok dan Reels, caption per slide untuk carousel Instagram, dan outline bertimestamp untuk YouTube.",
     alt: "",
   },
   {
     id: "salin",
+    art: "/fitur-salin.png",
     title: "Hitung kata, salin sekali klik.",
     body: "Jumlah kata terlihat selagi kamu mengedit, jadi kamu tahu naskahnya muat di durasi. Selesai, tinggal salin ke caption atau teleprompter.",
     alt: "",
   },
   {
     id: "riwayat",
+    art: "/fitur-riwayat.png",
     title: "Draft lama tetap bisa dibuka.",
     body: "Draft yang sudah kamu buat tersimpan di riwayat. Ide yang belum sempat diposting bisa kamu buka dan lanjutkan kapan saja.",
     alt: "",
@@ -103,6 +111,7 @@ function FeatureCell({ feature, size, className }: { feature: Feature; size: "le
       <Illustration
         src={feature.art}
         alt={feature.alt}
+        imgClassName={feature.artClassName}
         ratio={isLead ? "aspect-2/1" : "aspect-2/1 md:aspect-4/3"}
         exportSize={isLead ? "1200 × 600" : "800 × 600"}
       />
@@ -130,11 +139,23 @@ function FeatureCell({ feature, size, className }: { feature: Feature; size: "le
   );
 }
 
-function Illustration({ src, alt, ratio, exportSize }: { src?: string; alt: string; ratio: string; exportSize: string }) {
+function Illustration({
+  src,
+  alt,
+  ratio,
+  exportSize,
+  imgClassName,
+}: {
+  src?: string;
+  alt: string;
+  ratio: string;
+  exportSize: string;
+  imgClassName?: string;
+}) {
   if (src) {
     return (
       <div className={cx("overflow-hidden bg-neutral-100", ratio)}>
-        <FadeImage src={src} alt={alt} />
+        <FadeImage src={src} alt={alt} className={imgClassName} />
       </div>
     );
   }
@@ -147,7 +168,7 @@ function Illustration({ src, alt, ratio, exportSize }: { src?: string; alt: stri
 
 // Lazy art fades in once decoded instead of popping onto the placeholder. Opacity only, so it stays on under
 // reduced motion. The pending state is hidden only when scripting is on (app.css), so no-JS still shows the art.
-function FadeImage({ src, alt }: { src: string; alt: string }) {
+function FadeImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
   const ref = useRef<HTMLImageElement>(null);
   const [pending, setPending] = useState(true);
 
@@ -166,7 +187,7 @@ function FadeImage({ src, alt }: { src: string; alt: string }) {
       onLoad={() => setPending(false)}
       onError={() => setPending(false)}
       data-img-pending={pending || undefined}
-      className="size-full object-cover transition-opacity duration-200 ease-out"
+      className={cx("size-full object-cover transition-opacity duration-200 ease-out", className)}
     />
   );
 }

@@ -35,8 +35,9 @@ const nudge = "inline-flex transition-[translate,color] duration-200 ease-(--eas
 
 export function Footer() {
   return (
-    <footer className="grid gap-px bg-line lg:grid-cols-12">
-      <div className={`flex flex-col gap-8 bg-paper py-10 md:py-12 lg:col-span-5 lg:justify-between ${inset}`}>
+    // Tablet: brand and page links share the first row; legal and social split the second.
+    <footer className="grid gap-px bg-line md:grid-cols-2 lg:grid-cols-12">
+      <div className={`flex flex-col gap-8 bg-paper py-10 md:justify-between md:py-12 lg:col-span-5 ${inset}`}>
         <div className="flex flex-col gap-4">
           <Wordmark />
           <p className="m-0 max-w-90 text-body text-pretty text-ink">Dari ide mentah jadi naskah siap posting.</p>
@@ -69,7 +70,7 @@ export function Footer() {
       </nav>
 
       {/* Legal and social are short lists, so they share one column instead of each taking a thin one. */}
-      <div className="grid gap-px bg-line sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+      <div className="grid gap-px bg-line sm:grid-cols-2 md:col-span-2 lg:col-span-3 lg:grid-cols-1">
         <nav aria-labelledby="footer-legal" className={`flex flex-col gap-3 bg-paper py-10 md:py-12 ${inset}`}>
           <h2 id="footer-legal" className={heading}>
             Legal
@@ -108,7 +109,7 @@ export function Footer() {
         </section>
       </div>
 
-      <div className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-paper py-3 lg:col-span-12 ${inset}`}>
+      <div className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-paper py-3 md:col-span-2 lg:col-span-12 ${inset}`}>
         <p className="m-0 font-mono text-label text-neutral-600">© {new Date().getFullYear()} Scripta</p>
         <a href="#top" className={`${link} gap-1.5 font-semibold`}>
           Kembali ke atas

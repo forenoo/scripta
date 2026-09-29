@@ -16,12 +16,14 @@ export function ClosingCta() {
       {/* Vertical padding lives on the columns, not the cell, so the bookend photo can stand on the hairline
           below. It mirrors the hero cutout: the same hand, now pressing a one-key pad that stands in for "Buat draft". */}
       <div className={`bg-paper ${inset}`}>
-        <div className="grid lg:grid-cols-12">
-          <span className="pt-16 font-mono text-label text-neutral-600 uppercase md:pt-24 lg:col-span-3 lg:pt-27">
+        {/* Tablet: copy and photo share a row, so the photo stands beside the CTA instead of leaving a blank band.
+            At lg the label column narrows (2 of 12) so the h1 keeps a wide enough measure; from xl it returns to 3. */}
+        <div className="grid md:grid-cols-12">
+          <span className="pt-16 font-mono text-label text-neutral-600 uppercase md:col-span-12 md:pt-24 lg:col-span-2 lg:pt-27 xl:col-span-3">
             04 / Mulai
           </span>
-          <div className="flex flex-col items-start gap-6 pt-4 pb-10 md:pb-12 lg:col-span-5 lg:pt-24 lg:pb-16">
-            <h2 id="mulai-title" className="m-0 max-w-200 text-h2 text-balance text-ink sm:text-h1">
+          <div className="flex flex-col items-start gap-6 pt-4 pb-10 md:col-span-7 md:pr-8 md:pb-12 lg:pr-0 lg:col-span-6 lg:pt-24 lg:pb-16 xl:col-span-5">
+            <h2 id="mulai-title" className="m-0 max-w-200 text-h2 text-balance text-ink sm:text-h1 md:text-h2 lg:text-h1">
               Draft pertamanya biar Scripta yang tulis.
             </h2>
             <p className="m-0 max-w-140 text-body text-pretty text-neutral-600 md:text-body-l">
@@ -36,10 +38,16 @@ export function ClosingCta() {
               <span className="text-small text-neutral-600">Mulai dari paket Free, tanpa kartu kredit.</span>
             </div>
           </div>
-          {/* Narrow screens: after the CTA, before the steps. From lg: fills the column's height, anchored low.
-              Asset: /cta-macropad.png (see docs/asset-brief.md, #7). */}
-          <div className="lg:relative lg:col-span-4">
-            <Cutout className="mx-auto aspect-3/4 w-full max-w-60 lg:absolute lg:top-12 lg:right-0 lg:bottom-0 lg:left-8 lg:aspect-auto lg:w-auto lg:max-w-none" />
+          {/* Phones: after the CTA, before the steps. Tablet: beside the copy, standing on the hairline. From lg: fills the column's height, anchored low.
+              The right sleeve leaves through the photo's right edge, so the slot cancels the section inset and the
+              photo pins bottom-right: the arm runs flush into the section's right border.
+              Asset: /cta-macropad.png (see docs/asset-brief.md, #7), 1122 × 1402. */}
+          <div className="md:col-span-5 md:self-end lg:relative lg:col-span-4 lg:self-stretch">
+            <Cutout
+              src="/cta-macropad.png"
+              className="-mr-5 ml-auto aspect-1122/1402 w-full max-w-72 md:-mr-8 lg:absolute lg:top-12 lg:-right-12 lg:bottom-0 lg:left-8 lg:mr-0 lg:aspect-auto lg:w-auto lg:max-w-none"
+              imgClassName="object-right-bottom"
+            />
           </div>
         </div>
       </div>

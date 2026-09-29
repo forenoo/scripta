@@ -26,7 +26,8 @@ export default function Home() {
         <a href="/" aria-label="Scripta, beranda" className="text-ink hover:text-ink">
           <Wordmark />
         </a>
-        <Button variant="secondary" size="sm" className="ml-auto">
+        {/* The pseudo-element stretches the tap area to 44px without making the button look heavier. */}
+        <Button variant="secondary" size="sm" className="relative ml-auto after:absolute after:inset-x-0 after:-inset-y-1.5">
           Masuk
         </Button>
       </header>

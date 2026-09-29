@@ -45,8 +45,8 @@ const formats = ["Hook 15 detik", "Caption carousel per slide", "Outline YouTube
 
 export function Pricing() {
   return (
-    <section id="harga" aria-labelledby="harga-title" className="grid gap-px border-b border-line bg-line lg:grid-cols-12">
-      <div className={`bg-paper pt-16 pb-10 md:pt-24 md:pb-12 lg:col-span-12 ${inset}`}>
+    <section id="harga" aria-labelledby="harga-title" className="grid gap-px border-b border-line bg-line md:grid-cols-2 lg:grid-cols-12">
+      <div className={`bg-paper pt-16 pb-10 md:col-span-2 md:pt-24 md:pb-12 lg:col-span-12 ${inset}`}>
         <div className="grid gap-4 lg:grid-cols-12 lg:items-start lg:gap-0">
           <span className="font-mono text-label text-neutral-600 uppercase lg:col-span-3 lg:pt-1.5">03 / Harga</span>
           <h2 id="harga-title" className="m-0 text-h2 text-balance text-neutral-500 lg:col-span-9">
@@ -55,7 +55,9 @@ export function Pricing() {
         </div>
       </div>
 
-      <div className={`flex flex-col gap-8 bg-paper py-10 md:py-12 lg:col-span-4 ${inset}`}>
+      {/* Tablet: the intro spans the row with its copy and format list side by side, so the two plans below sit
+          next to each other and compare across. From lg it becomes the first of three columns. */}
+      <div className={`flex flex-col gap-8 bg-paper py-10 md:col-span-2 md:grid md:grid-cols-2 md:py-12 lg:col-span-4 lg:flex ${inset}`}>
         <div className="flex flex-col gap-3">
           <h3 className="m-0 text-h4 text-balance">Alurnya sama, bedanya di kuota.</h3>
           <p className="m-0 max-w-100 text-small text-pretty text-neutral-600">
@@ -64,7 +66,7 @@ export function Pricing() {
           </p>
         </div>
         {/* At lg, mb-20 (the CTA's 48px + gap-8) sits these rows on the same hairlines as the plans' quota rows. */}
-        <ul className="m-0 flex list-none flex-col p-0 lg:mt-auto lg:mb-20">
+        <ul className="m-0 flex list-none flex-col p-0 md:self-end lg:mt-auto lg:mb-20 lg:self-auto">
           {formats.map((f) => (
             <li key={f} className="flex items-baseline gap-3 border-t border-line py-3 text-small last:border-b">
               <span aria-hidden="true" className="font-mono text-label text-neutral-500">

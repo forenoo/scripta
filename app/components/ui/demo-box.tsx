@@ -87,7 +87,7 @@ export function DemoBox({ idea, drafts }: { idea: string; drafts: Draft[] }) {
           <button
             type="button"
             onClick={() => setRun((r) => r + 1)}
-            className="pressable inline-flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-xs bg-accent px-2.5 text-code-sm font-semibold text-paper hover:bg-cobalt-600 active:bg-cobalt-700"
+            className="pressable relative inline-flex h-7 shrink-0 after:absolute after:inset-x-0 after:-inset-y-2 cursor-pointer items-center gap-1.5 rounded-xs bg-accent px-2.5 text-code-sm font-semibold text-paper hover:bg-cobalt-600 active:bg-cobalt-700"
           >
             Buat draft
             <CornerDownLeft />
@@ -183,7 +183,7 @@ function CopyButton({ text }: { text: string }) {
               () => setState("failed"),
             )
         }
-        className="pressable inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-sm border border-neutral-700 px-2 text-paper hover:bg-neutral-700 active:bg-neutral-600"
+        className="pressable relative inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-sm after:absolute after:inset-x-0 after:-inset-y-2.5 border border-neutral-700 px-2 text-paper hover:bg-neutral-700 active:bg-neutral-600"
       >
         {/* Icons and labels are stacked in one cell each and crossfade, so the swap reads as one control changing. */}
         <span className="grid" aria-hidden="true">
